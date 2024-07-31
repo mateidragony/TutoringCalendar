@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@event-calendar/build@3.3.0/event-calendar.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@event-calendar/build@3.3.0/event-calendar.min.js"></script>
+</head>
+
+<body>
+    <div id="ec"></div>
+    <script>
+        let ec = new EventCalendar(document.getElementById('ec'), {
+            view: 'timeGridWeek',
+            eventSources: [
+                {events: getEventsFromOutlook}
+            ]
+        });
+
+        async function getEventsFromOutlook(fetchInfo, successCallback, failureCallback) {
+            const url = "https://outlook.office365.com/owa/calendar/3301d26015db4f29b45b05acb957ab39@iu.edu/8d4643fb2fe34f4b8aff9c88faff51b315103297255181259293/calendar.ics";
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                const json = await response.json();
+                return json;
+            } catch (error) {
+                console.error(error.message);
+                return {};
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+
+<!-- https://outlook.office365.com/owa/calendar/3301d26015db4f29b45b05acb957ab39@iu.edu/8d4643fb2fe34f4b8aff9c88faff51b315103297255181259293/calendar.ics -->
