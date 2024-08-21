@@ -45,16 +45,16 @@ function handleResponse(response) {
          * line above and uncomment the section below.
          */
 
-        myMSALObj.ssoSilent(silentRequest).
-            then((response) => {
-                 welcomeUser(response.account.username);
-                 updateTable(response.account);
-            }).catch(error => {
-                console.error("Silent Error: " + error);
-                if (error instanceof msal.InteractionRequiredAuthError) {
-                    signIn();
-                }
-            });
+        // myMSALObj.ssoSilent(silentRequest).
+        //     then((response) => {
+        //          welcomeUser(response.account.username);
+        //          updateTable(response.account);
+        //     }).catch(error => {
+        //         console.error("Silent Error: " + error);
+        //         if (error instanceof msal.InteractionRequiredAuthError) {
+        //             signIn();
+        //         }
+        //     });
     }
 }
 
@@ -65,47 +65,11 @@ function signIn() {
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
      */
 
-    // myMSALObj.loginPopup(loginRequest)
-    //     .then(handleResponse)
-    //     .catch(error => {
-    //         console.error(error);
-    //     });
-
-    // myMSALObj.ssoSilent(silentRequest).
-    //         then((response) => {
-    //              welcomeUser(response.account.username);
-    //              updateTable(response.account);
-    //         }).catch(error => {
-    //             console.error("Silent Error: " + error);
-    //             if (error instanceof msal.InteractionRequiredAuthError) {
-    //                 signIn();
-    //             }
-    //         });
-
-    const silentRequest = {
-        scopes: ["User.Read"]
-    };
-    
-    try {
-        const loginResponse = myMSALObj.ssoSilent(silentRequest).
-            then((response) => {
-                welcomeUser(response.account.username);
-                updateTable(response.account);
-            }).catch(error => {
-                console.error("Silent Error: " + error);
-                if (error instanceof msal.InteractionRequiredAuthError) {
-                    signIn();
-                }
-            });
-    } catch (err) {
-        if (err instanceof InteractionRequiredAuthError) {
-            const loginResponse = myMSALObj.loginPopup(request).catch(e => {
-                console.log(e)
-            });
-        } else {
-            console.log(err)
-        }
-    }
+    myMSALObj.loginPopup(loginRequest)
+        .then(handleResponse)
+        .catch(error => {
+            console.error(error);
+        });
 }
 
 function signOut() {
