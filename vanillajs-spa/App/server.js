@@ -1,6 +1,24 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
+const sql = require('mysql2');
+
+const connection = sql.createConnection({
+    host: 'localhost',
+    user: 'tutor',
+    password: 'luddy123',
+    database: 'menagerie', //'tutoring_cal',
+    insecureAuth: true,
+});
+
+connection.connect();
+
+connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+    if (error) throw error;
+    console.log('The solution is: ', results[0].solution);
+});
+
+connection.end();
 
 const DEFAULT_PORT = process.env.PORT || 3000;
 
